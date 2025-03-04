@@ -1,5 +1,6 @@
 package com.example.argumentresolverplayground.config;
 
+import com.example.argumentresolverplayground.resolver.AuthUserArgumentResolver;
 import com.example.argumentresolverplayground.resolver.CustomPathVariableArgumentResolver;
 import com.example.argumentresolverplayground.resolver.CustomRequestParamArgumentResolver;
 import com.example.argumentresolverplayground.resolver.CustomSessionAttributeArgumentResolver;
@@ -17,5 +18,6 @@ public class WebConfig implements WebMvcConfigurer {
         resolvers.add(new CustomSessionAttributeArgumentResolver());
         resolvers.add(new CustomRequestParamArgumentResolver());
         resolvers.add(new CustomPathVariableArgumentResolver());
+        resolvers.add(new AuthUserArgumentResolver());
     }
 }
