@@ -1,0 +1,26 @@
+package com.example.argumentresolverplayground.config;
+
+import com.example.argumentresolverplayground.filter.JwtFilter;
+import com.example.argumentresolverplayground.filter.JwtUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+@RequiredArgsConstructor
+public class FilterConfig {
+
+    private final JwtUtil jwtUtil;
+    private final ObjectMapper objectMapper;
+
+    @Bean
+    public FilterRegistrationBean<JwtFilter> jwtFilter() {
+        FilterRegistrationBean<JwtFilter> registrationBean = new FilterRegistrationBean<>();
+        registrationBean.setFilter(new JwtFilter(jwtUtil, objectMapper));
+        registrationBean.addUrlPatterns("/*");
+
+        return registrationBean;
+    }
+}

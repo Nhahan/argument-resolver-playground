@@ -19,11 +19,18 @@ public class CustomRequestParamControllerTest {
 
     @Test
     public void testCustomRequestParam() throws Exception {
+        String paramValue = "testuser";
+        
         MvcResult result = mockMvc.perform(get("/custom/request")
-                        .param("name", "오박사"))
+                        .param("name", paramValue))
                 .andExpect(status().isOk())
                 .andReturn();
 
-        System.out.println(result.getResponse().getContentAsString());
+        String content = result.getResponse().getContentAsString();
+        System.out.println("Response: " + content);
+        
+        // ArgumentResolver가 동작했다면 "Custom Request Param: testuser"를 반환해야 함
+        assert content.equals("Custom Request Param: " + paramValue) : 
+            "Expected 'Custom Request Param: " + paramValue + "' but got '" + content + "'";
     }
 }

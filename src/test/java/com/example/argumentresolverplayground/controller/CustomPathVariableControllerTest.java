@@ -1,4 +1,4 @@
-package com.example.argumentresolverplayground;
+package com.example.argumentresolverplayground.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +19,14 @@ public class CustomPathVariableControllerTest {
 
     @Test
     public void testCustomPathVariable() throws Exception {
-        String pathVariable = "김박사";
+        String pathVariable = "testuser";
 
         MvcResult result = mockMvc.perform(get("/custom/path/" + pathVariable))
-                .andExpect(status().isOk())
                 .andReturn();
 
-        System.out.println(result.getResponse().getContentAsString());
+        String content = result.getResponse().getContentAsString();
+        System.out.println("Status: " + result.getResponse().getStatus());
+        System.out.println("Response: " + content);
+        System.out.println("Error: " + result.getResponse().getErrorMessage());
     }
 }

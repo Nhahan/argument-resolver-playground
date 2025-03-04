@@ -15,7 +15,9 @@ public class CustomPathVariableArgumentResolver implements HandlerMethodArgument
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(CustomPathVariable.class);
+        boolean supports = parameter.hasParameterAnnotation(CustomPathVariable.class);
+        System.out.println("CustomPathVariableArgumentResolver.supportsParameter: " + supports);
+        return supports;
     }
 
     @Override
@@ -23,20 +25,27 @@ public class CustomPathVariableArgumentResolver implements HandlerMethodArgument
                                   ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) throws Exception {
+        System.out.println("CustomPathVariableArgumentResolver.resolveArgument called");
         CustomPathVariable annotation = parameter.getParameterAnnotation(CustomPathVariable.class);
         if (annotation == null) {
+            System.out.println("No annotation found");
             return null;
         }
         String variableName = annotation.value();
+        System.out.println("Variable name: " + variableName);
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         if (request == null) {
+            System.out.println("No HttpServletRequest found");
             return null;
         }
         @SuppressWarnings("unchecked")
         Map<String, String> uriTemplateVars = (Map<String, String>) request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
         if (uriTemplateVars == null) {
+            System.out.println("No URI template variables found");
             return null;
         }
-        return uriTemplateVars.get(variableName);
+        String result = uriTemplateVars.get(variableName);
+        System.out.println("Resolved value: " + result);
+        return result;
     }
 }

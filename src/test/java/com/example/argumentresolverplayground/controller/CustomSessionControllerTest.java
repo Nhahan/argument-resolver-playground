@@ -26,13 +26,21 @@ class CustomSessionControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        MockHttpSession session = (MockHttpSession) setResult.getRequest().getSession(false);
+        MockHttpSession session = (MockHttpSession) setResult.getRequest().getSession();
+        
+        // 세션에 "hello" = "world!" 가 저장되었는지 확인
+        System.out.println("Session attribute 'hello': " + session.getAttribute("hello"));
 
         // 세션 호출
-        mockMvc.perform(get("/session").session(session))
+        MvcResult getResult = mockMvc.perform(get("/session").session(session))
                 .andExpect(status().isOk())
-                .andDo(result ->
-                        System.out.println(result.getResponse().getContentAsString())
-                );
+                .andReturn();
+
+        String content = getResult.getResponse().getContentAsString();
+        System.out.println("Response: " + content);
+        
+        // ArgumentResolver가 동작했다면 "hello=world!"를 반환해야 함
+        assert content.equals("hello=world!") : 
+            "Expected 'hello=world!' but got '" + content + "'";
     }
 }

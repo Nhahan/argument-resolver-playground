@@ -1,6 +1,5 @@
 package com.example.argumentresolverplayground.resolver;
 
-
 import com.example.argumentresolverplayground.annotation.CustomRequestParam;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.MethodParameter;
